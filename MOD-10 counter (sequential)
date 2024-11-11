@@ -1,0 +1,59 @@
+*Verilog Codes*:-
+
+module mod10_counter (
+    input clk,
+    input reset,
+    output reg [3:0] count
+);
+
+    always @(posedge clk or posedge reset) begin
+        if (reset) 
+            count <= 4'b0000; // Reset count to 0
+        else if (count == 4'b1001)
+            count <= 4'b0000; // Reset to 0 after reaching 9
+        else
+            count <= count + 1; // Increment count
+    end
+
+endmodule
+
+
+*Test Bench code*:-
+
+module mod10_counter_tb;
+
+    reg clk;
+    reg reset;
+    wire [3:0] count;
+
+    // Instantiate the MOD-10 counter
+    mod10_counter uut (
+        .clk(clk),
+        .reset(reset),
+        .count(count)
+    );
+
+    // Generate clock signal
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk; // Toggle clock every 5 time units
+    end
+
+    // Test sequence
+    initial begin
+        $display("Time\tReset\tCount");
+        $monitor("%g\t%b\t%b", $time, reset, count);
+
+        reset = 1;    // Apply reset
+        #10 reset = 0; // Release reset
+
+        // Observe the count from 0 to 9, then check it resets back to 0
+        #100; // Wait for some time to observe the counting
+
+        reset = 1;    // Reset counter again to test reset functionality
+        #10 reset = 0; // Release reset
+
+        #50 $stop;    // End the simulation
+    end
+
+endmodule
