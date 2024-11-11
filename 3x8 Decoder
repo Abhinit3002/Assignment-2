@@ -1,0 +1,70 @@
+*Verilog Code*:-
+
+module decoder3x8 (
+    input [2:0] binary_in,
+    output reg [7:0] decimal_out
+);
+
+    always @(*) begin
+        case (binary_in)
+            3'b000: decimal_out = 8'b00000001;
+            3'b001: decimal_out = 8'b00000010;
+            3'b010: decimal_out = 8'b00000100;
+            3'b011: decimal_out = 8'b00001000;
+            3'b100: decimal_out = 8'b00010000;
+            3'b101: decimal_out = 8'b00100000;
+            3'b110: decimal_out = 8'b01000000;
+            3'b111: decimal_out = 8'b10000000;
+            default: decimal_out = 8'b00000000;
+        endcase
+    end
+
+endmodule
+
+########################################################################
+
+*Test Bench*:-
+module decoder3x8_tb;
+
+    reg [2:0] binary_in;
+    wire [7:0] decimal_out;
+
+    // Instantiate the decoder
+    decoder3x8 uut (
+        .binary_in(binary_in),
+        .decimal_out(decimal_out)
+    );
+
+    initial begin
+        // Display the header
+        $display("Binary Input | Decimal Output");
+        $display("---------------------------");
+
+        // Apply test vectors
+        binary_in = 3'b000; #10;
+        $display("      %b     |     %b", binary_in, decimal_out);
+
+        binary_in = 3'b001; #10;
+        $display("      %b     |     %b", binary_in, decimal_out);
+
+        binary_in = 3'b010; #10;
+        $display("      %b     |     %b", binary_in, decimal_out);
+
+        binary_in = 3'b011; #10;
+        $display("      %b     |     %b", binary_in, decimal_out);
+
+        binary_in = 3'b100; #10;
+        $display("      %b     |     %b", binary_in, decimal_out);
+
+        binary_in = 3'b101; #10;
+        $display("      %b     |     %b", binary_in, decimal_out);
+
+        binary_in = 3'b110; #10;
+        $display("      %b     |     %b", binary_in, decimal_out);
+
+        binary_in = 3'b111; #10;
+        $display("      %b     |     %b", binary_in, decimal_out);
+
+        $stop;
+    end
+endmodule
